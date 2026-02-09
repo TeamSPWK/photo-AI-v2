@@ -1,0 +1,14 @@
+{
+  "name": "face-swap-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Face swap application using Replicate AI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@huggingface/inference": "^4.13.11",
+    "replicate": "^1.4.0"
+  }
+}

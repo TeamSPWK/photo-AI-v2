@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SpaceWalk AI Studio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4285f4 0%, #ea4335 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 22px;
+            opacity: 0.95;
+        }
+
+        .free-badge {
+            display: inline-block;
+            background: #34a853;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .upload-box {
+            border: 3px dashed #d0d0d0;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            background: #fafafa;
+            min-height: 400px;
+        }
+
+        .upload-box.has-image {
+            border-color: #4285f4;
+            background: #e8f0fe;
+        }
+
+        .upload-label {
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .upload-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .upload-subtext {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .upload-method-btn {
+            padding: 16px 30px;
+            border: 2px solid #4285f4;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: white;
+            color: #4285f4;
+            transition: all 0.3s;
+        }
+
+        .upload-method-btn:hover {
+            background: #4285f4;
+            color: white;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .camera-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .camera-modal.show {
+            display: flex;
+        }
+
+        .camera-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .camera-title {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+
+        #cameraVideo {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            background: #000;
+        }
+
+        .camera-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .camera-btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .capture-btn {
+            background: #34a853;
+            color: white;
+        }
+
+        .capture-btn:hover {
+            background: #0f9d58;
+            transform: translateY(-2px);
+        }
+
+        .close-camera-btn {
+            background: #ea4335;
+            color: white;
+        }
+
+        .close-camera-btn:hover {
+            background: #c5221f;
+            transform: translateY(-2px);
+        }
+
+        .api-section {
+            background: #4285f4;
+            border: 2px solid #1967d2;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .api-section h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .api-section a {
+            color: white;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .api-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            margin-top: 12px;
+        }
+
+        .api-input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 24px;
+            background: linear-gradient(135deg, #34a853 0%, #0f9d58 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 22px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(52, 168, 83, 0.5);
+        }
+
+        .generate-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 60px;
+            margin: 30px 0;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f0f0f0;
+            border-top: 6px solid #4285f4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .error {
+            background: #f8d7da;
+            border: 2px solid #f5c6cb;
+            border-radius: 12px;
+            padding: 20px;
+            color: #721c24;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .result-section {
+            margin-top: 50px;
+            padding-top: 50px;
+            border-top: 3px solid #e0e0e0;
+            display: none;
+            text-align: center;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+        }
+
+        .result-image {
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .download-btn {
+            padding: 20px 60px;
+            background: #34a853;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .download-btn:hover {
+            background: #0f9d58;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(52, 168, 83, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 SpaceWalk AI Studio</h1>
+            <p>당신의 얼굴을 어디든 합성하세요</p>
+        </div>
+
+        <div class="main-card">
+            <!-- Upload Section -->
+            <div class="upload-grid">
+                <!-- Person Photo -->
+                <div class="upload-box" id="personBox">
+                    <div class="upload-label">👤 인물 사진</div>
+                    <div class="upload-icon" id="personIcon">📸</div>
+                    <div class="upload-text" id="personText">얼굴이 있는 사진</div>
+                    <div class="upload-subtext">이 사람의 얼굴을 추출합니다</div>
+                    <img id="personPreview" class="preview-image" style="display: none;">
+                    <div class="upload-buttons" id="personButtons">
+                        <button class="upload-method-btn" onclick="document.getElementById('personInput').click()">
+                            📁 파일 업로드
+                        </button>
+                        <button class="upload-method-btn" onclick="openCamera()">
+                            📷 웹캠으로 촬영
+                        </button>
+                    </div>
+                </div>
+                <input type="file" id="personInput" accept="image/*">
+
+                <!-- Ad Background -->
+                <div class="upload-box" id="adBox">
+                    <div class="upload-label">🖼️ 광고 배경</div>
+                    <div class="upload-icon" id="adIcon">🎨</div>
+                    <div class="upload-text" id="adText">배경 미디어 업로드</div>
+                    <div class="upload-subtext">이미지 또는 영상 파일</div>
+                    <img id="adPreview" class="preview-image" style="display: none;">
+                    <video id="adVideoPreview" class="preview-image" style="display: none;" controls></video>
+                    <div class="upload-buttons" id="adButtons">
+                        <button class="upload-method-btn" onclick="document.getElementById('adInput').click()">
+                            📁 파일 업로드 (이미지/영상)
+                        </button>
+                    </div>
+                </div>
+                <input type="file" id="adInput" accept="image/*,video/*">
+            </div>
+
+            <!-- API Section -->
+            <div class="api-section" id="apiSection" style="display: none;">
+                <h3>🔑 Google AI Studio API 키</h3>
+                <p>
+                    <a href="https://aistudio.google.com/apikey" target="_blank">AI Studio</a>에서 발급받으세요
+                </p>
+                <input type="text" class="api-input" id="apiKeyInput" placeholder="AIzaSy... 로 시작하는 API 키">
+            </div>
+
+            <!-- Generate Button -->
+            <button class="generate-btn" id="generateBtn" disabled onclick="generateFaceSwap()">
+                합성 시작
+            </button>
+
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">SpaceWalk AI가 얼굴을 합성하고 있습니다...</div>
+                <div style="margin-top: 12px; color: #999; font-size: 14px;">약 10-20초 소요됩니다</div>
+            </div>
+
+            <!-- Error -->
+            <div class="error" id="error"></div>
+
+            <!-- Result -->
+            <div class="result-section" id="resultSection">
+                <div class="result-title">✨ 합성 완료!</div>
+                <img id="resultImage" class="result-image">
+                <button class="download-btn" onclick="downloadResult()">⬇️ 다운로드</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Modal -->
+    <div class="camera-modal" id="cameraModal">
+        <div class="camera-content">
+            <div class="camera-title">📷 웹캠으로 사진 촬영</div>
+            <video id="cameraVideo" autoplay playsinline></video>
+            <canvas id="cameraCanvas" style="display: none;"></canvas>
+            <div class="camera-buttons">
+                <button class="camera-btn capture-btn" onclick="capturePhoto()">
+                    📸 사진 촬영
+                </button>
+                <button class="camera-btn close-camera-btn" onclick="closeCamera()">
+                    ❌ 닫기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let personImage = null;
+        let adImage = null;
+        let resultImageUrl = null;
+        let cameraStream = null;
+
+        // Load saved API key
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedApiKey = localStorage.getItem('gemini_api_key');
+            if (savedApiKey) {
+                document.getElementById('apiKeyInput').value = savedApiKey;
+            }
+        });
+
+        // Person photo upload
+        document.getElementById('personInput').addEventListener('change', function(e) {
+            handleImageUpload(e.target.files[0], 'person');
+        });
+
+        // Ad background upload
+        document.getElementById('adInput').addEventListener('change', function(e) {
+            handleImageUpload(e.target.files[0], 'ad');
+        });
+
+        function handleImageUpload(file, type) {
+            if (!file) return;
+
+            // Check if it's a video file
+            const isVideo = file.type.startsWith('video/');
+
+            if (isVideo && type === 'ad') {
+                // Handle video file - extract first frame
+                const video = document.createElement('video');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                video.preload = 'metadata';
+                video.src = URL.createObjectURL(file);
+
+                video.onloadeddata = function() {
+                    // Seek to 1 second or first frame
+                    video.currentTime = 1;
+                };
+
+                video.onseeked = function() {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    adImage = canvas.toDataURL('image/jpeg', 0.9);
+
+                    // Show video preview
+                    const videoPreview = document.getElementById('adVideoPreview');
+                    videoPreview.src = URL.createObjectURL(file);
+                    videoPreview.style.display = 'block';
+                    document.getElementById('adPreview').style.display = 'none';
+
+                    document.getElementById('adIcon').textContent = '✅';
+                    document.getElementById('adText').textContent = '영상 업로드 완료!';
+                    document.getElementById('adBox').classList.add('has-image');
+                    document.getElementById('adButtons').style.display = 'none';
+
+                    checkReady();
+                    URL.revokeObjectURL(video.src);
+                };
+
+                return;
+            }
+
+            // Handle image file
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (type === 'person') {
+                    personImage = e.target.result;
+                    document.getElementById('personPreview').src = personImage;
+                    document.getElementById('personPreview').style.display = 'block';
+                    document.getElementById('personIcon').textContent = '✅';
+                    document.getElementById('personText').textContent = '인물 사진 업로드 완료!';
+                    document.getElementById('personBox').classList.add('has-image');
+                    document.getElementById('personButtons').style.display = 'none';
+                } else {
+                    adImage = e.target.result;
+                    document.getElementById('adPreview').src = adImage;
+                    document.getElementById('adPreview').style.display = 'block';
+                    document.getElementById('adVideoPreview').style.display = 'none';
+                    document.getElementById('adIcon').textContent = '✅';
+                    document.getElementById('adText').textContent = '이미지 업로드 완료!';
+                    document.getElementById('adBox').classList.add('has-image');
+                    document.getElementById('adButtons').style.display = 'none';
+                }
+
+                checkReady();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function checkReady() {
+            if (personImage && adImage) {
+                document.getElementById('apiSection').style.display = 'block';
+            }
+
+            const hasImages = personImage && adImage;
+            const hasApiKey = document.getElementById('apiKeyInput').value.trim().length > 0;
+            document.getElementById('generateBtn').disabled = !(hasImages && hasApiKey);
+        }
+
+        document.getElementById('apiKeyInput').addEventListener('input', checkReady);
+
+        // Camera functions
+        async function openCamera() {
+            try {
+                const modal = document.getElementById('cameraModal');
+                const video = document.getElementById('cameraVideo');
+
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+
+                video.srcObject = cameraStream;
+                modal.classList.add('show');
+            } catch (error) {
+                console.error('카메라 접근 오류:', error);
+                alert('카메라에 접근할 수 없습니다. 브라우저 권한을 확인해주세요.');
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('cameraVideo');
+            const canvas = document.getElementById('cameraCanvas');
+            const context = canvas.getContext('2d');
+
+            // Set canvas size to video size
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            // Draw video frame to canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Convert canvas to base64 image
+            personImage = canvas.toDataURL('image/jpeg', 0.9);
+
+            // Update UI
+            document.getElementById('personPreview').src = personImage;
+            document.getElementById('personPreview').style.display = 'block';
+            document.getElementById('personIcon').textContent = '✅';
+            document.getElementById('personText').textContent = '웹캠 촬영 완료!';
+            document.getElementById('personBox').classList.add('has-image');
+            document.getElementById('personButtons').style.display = 'none';
+
+            closeCamera();
+            checkReady();
+        }
+
+        function closeCamera() {
+            const modal = document.getElementById('cameraModal');
+            const video = document.getElementById('cameraVideo');
+
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+
+            video.srcObject = null;
+            modal.classList.remove('show');
+        }
+
+        async function generateFaceSwap() {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+
+            if (!personImage || !adImage || !apiKey) {
+                showError('모든 항목을 입력해주세요!');
+                return;
+            }
+
+            // Save API key
+            localStorage.setItem('gemini_api_key', apiKey);
+
+            // Show loading
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('generateBtn').disabled = true;
+            document.getElementById('error').classList.remove('show');
+            document.getElementById('resultSection').classList.remove('show');
+
+            try {
+                console.log('🚀 SpaceWalk AI 얼굴 합성 시작...');
+
+                const response = await fetch('/api/faceswap', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        apiKey: apiKey,
+                        personImage: personImage,
+                        adImage: adImage
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`오류: ${errorData.error || response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                if (result.success && result.image) {
+                    resultImageUrl = result.image;
+                    document.getElementById('resultImage').src = resultImageUrl;
+                    document.getElementById('resultSection').classList.add('show');
+                    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+                    console.log('✅ 합성 성공!');
+                } else {
+                    throw new Error('결과 이미지를 받지 못했습니다.');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').classList.remove('show');
+                document.getElementById('generateBtn').disabled = false;
+            }
+        }
+
+        function downloadResult() {
+            if (!resultImageUrl) return;
+
+            const link = document.createElement('a');
+            link.download = `spacewalk_${Date.now()}.png`;
+            link.href = resultImageUrl;
+            link.click();
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
