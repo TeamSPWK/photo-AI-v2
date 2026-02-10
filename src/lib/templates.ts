@@ -14,15 +14,6 @@ export interface TemplateMetadata {
  */
 export const TEMPLATES: TemplateMetadata[] = [
   {
-    filename: "001.jpg",
-    personCount: 1,
-    mood: "luxury fashion",
-    colors: "warm orange/brown",
-    aspectRatio: "16:9",
-    description:
-      "Woman with horse in an elegant luxury fashion setting. Warm orange and brown tones evoke sophistication and high-end lifestyle branding.",
-  },
-  {
     filename: "001.webp",
     personCount: 1,
     mood: "elegant natural",
@@ -48,15 +39,6 @@ export const TEMPLATES: TemplateMetadata[] = [
     aspectRatio: "4:3",
     description:
       "Sporty campaign image with bold dark contrast tones. Athletic energy with clean modern styling.",
-  },
-  {
-    filename: "003.webp",
-    personCount: 4,
-    mood: "high fashion editorial",
-    colors: "beige/ocean blue",
-    aspectRatio: "16:9",
-    description:
-      "Four women in a high fashion editorial by the ocean. Soft beige and ocean blue palette creates a breezy yet glamorous group composition.",
   },
   {
     filename: "004.jpg",
