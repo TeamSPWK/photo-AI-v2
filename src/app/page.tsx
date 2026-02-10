@@ -97,7 +97,8 @@ export default function Home() {
             pollingRef.current = null;
           }
         } else if (data.status === "FAILED") {
-          // Video failed, but billboard is still showing -- silently stop polling
+          // Video failed — go back to BILLBOARD so loading indicator disappears
+          setStep("BILLBOARD");
           if (pollingRef.current) {
             clearInterval(pollingRef.current);
             pollingRef.current = null;
@@ -337,6 +338,14 @@ export default function Home() {
               message={billboardMessage}
               isVideoLoading={step === "VIDEO_PENDING"}
             />
+            <div className="pb-12 animate-fade-in-up" style={{ animationDelay: "1s" }}>
+              <button
+                onClick={handleStartOver}
+                className="glass rounded-full px-8 py-3 text-white/70 text-sm font-light tracking-wide border border-white/10 hover:text-white hover:border-white/30 transition-all cursor-pointer"
+              >
+                Start Over
+              </button>
+            </div>
           </div>
         )}
 
